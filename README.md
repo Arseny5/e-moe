@@ -26,7 +26,7 @@
   <img src="assets/method.png" width="100%">
 </p>
 
-**Overview of E-MoE.** A factorized denoiser (MDLM) samples tokens independently and puts mass on spurious pairs such as *new diego*. E-MoE uses MoE routing decisions as a discrete latent **z**: each expert is factorized, but the mixture over routes recovers the joint distribution. *Right:* one-step (NFE=1) samples on the Swiss-roll toy distribution.
+**Overview of E-MoE.** A factorized denoiser (MDLM) samples tokens independently and puts mass on spurious pairs such as *new diego*. E-MoE uses MoE routing decisions as a discrete latent **z**: each expert is factorized, but the mixture over routes recovers the joint distribution.
 
 ## Repository Structure
 
