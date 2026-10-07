@@ -12,6 +12,7 @@
 
 [![arXiv](https://img.shields.io/badge/arXiv-2609.37533-B31B1B?style=flat&logo=arxiv)](https://arxiv.org/abs/2609.37533)
 [![HF Papers](https://img.shields.io/badge/🤗_Hugging_Face-Paper-yellow?style=flat)](https://huggingface.co/papers/2609.37533)
+[![Website](https://img.shields.io/badge/Project-Website-1F4E8C?style=flat&logo=googlechrome&logoColor=white)](https://arseny5.github.io/e-moe/)
 
 </div>
 
