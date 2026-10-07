@@ -16,7 +16,7 @@
 </div>
 
 ## News
-- **[2026-09]** Vote for our paper at [HF Papers](https://huggingface.co/papers/2609.37533)!
+- **[2026-10]** Vote for our paper at [HF Papers](https://huggingface.co/papers/2609.37533)!
 - **[2026-09]** Our paper is accepted as a poster at the [NeurIPS 2026 DiffuLM workshop](https://7amin.github.io/diffulm-neurips2026/)!
 - **[2026-09]** Paper released on arXiv.
 
