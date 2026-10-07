@@ -25,13 +25,17 @@
     .section { padding: 2rem 1.5rem; }
     pre { background: #f5f5f5; padding: 1rem; border-radius: 6px; overflow-x: auto; }
     .btn-pill { border-radius: 999px; }
-    .video-wrap { max-width: 1280px; margin: 0 auto; }
-    .video-wrap video { width: 100%; display: block; border-radius: 10px; box-shadow: 0 6px 28px rgba(15, 30, 60, 0.18); background: #fff; }
+    .video-wrap { max-width: 1100px; margin: 0 auto; }
+    .video-wrap video { width: 100%; display: block; background: #fff; }
     .fig { margin: 1.4rem auto 0; text-align: center; }
     .fig img { width: 100%; }
+    .fig-pair { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+    .fig-pair img { flex: 1 1 420px; max-width: 520px; width: 100%; }
     .fig figcaption { color: #7a7a7a; font-size: 0.95rem; margin: 0.6rem auto 0; max-width: 940px; text-align: left; }
     .mathbox { border: 2px solid #c8d4e8; background: #f5f8fd; border-radius: 12px; padding: 1.05rem 1.2rem; margin: 1.2rem auto; max-width: 820px; overflow-x: auto; }
     .restable { border-collapse: collapse; margin: 1rem auto; font-size: 0.98rem; }
+    .restable.big { font-size: 1.08rem; }
+    .restable.big th, .restable.big td { padding: 9px 16px; }
     .restable th, .restable td { border: 1px solid #dfe3ea; padding: 7px 14px; text-align: center !important; white-space: nowrap; vertical-align: middle; }
     .restable thead th { background: #eef2f7; }
     .restable td.lft { text-align: left !important; }
@@ -64,7 +68,7 @@
       <div class="is-size-6 publication-authors" style="margin-top:0.6rem;">
         <span class="author-block"><sup>1</sup>AXXX&nbsp;&nbsp;</span>
         <span class="author-block"><sup>2</sup>Applied AI Institute</span>
-        <br><span class="has-text-grey">DiffuLM Workshop (poster)</span>
+        <br><span class="has-text-grey">Accepted at NeurIPS 2026 DiffuLM Workshop</span>
       </div>
 
       <!-- Buttons -->
@@ -112,7 +116,7 @@
 </section>
 
 <!-- ===================== FACTORIZATION BARRIER ===================== -->
-<section class="section has-background-light">
+<section class="section">
   <div class="container" style="max-width:1080px;">
     <h2 class="title is-3 has-text-centered">The Factorization Barrier</h2>
     <div class="content is-size-5 has-text-justified" style="max-width:960px; margin:0 auto;">
@@ -130,7 +134,7 @@
       </p>
     </div>
     <figure class="fig" style="max-width:960px;">
-      <img src="static/fig2_factorization.png" alt="Factorization error and mixture over expert routes">
+      <img src="static/factorization.svg" alt="Factorization error and mixture over expert routes">
       <figcaption>
         <strong>Factorization error and mixture over expert routes.</strong> <em>Top:</em> a factorized reverse
         process can produce spurious pairings when multiple tokens are sampled at once. <em>Bottom:</em> the routing
@@ -156,7 +160,7 @@
       </p>
     </div>
     <figure class="fig" style="max-width:980px;">
-      <img src="static/fig3_training.png" alt="E-MoE training: noisy pass gives the prior, clean pass gives the posterior">
+      <img src="static/method.svg" alt="E-MoE training: noisy pass gives the prior, clean pass gives the posterior">
       <figcaption>
         <strong>Training stage:</strong> we model prior $p_\theta(\mathbf{z}_{t_i}\mid\mathbf{x}_{t_i})$ and posterior
         $q_\theta(\mathbf{z}_{t_i}\mid\mathbf{x}_{t_i},\mathbf{x}_0)$ by the <strong>same</strong> router, unlike VADD. The
@@ -191,7 +195,6 @@
           <tr><td class="lft">Latent is chosen</td><td>&mdash;</td><td>once per sequence</td><td class="ours">per token and layer</td></tr>
           <tr><td class="lft">Learned, data-dependent prior</td><td><span class="no">&#10007;</span></td><td><span class="no">&#10007;</span></td><td class="ours"><span class="yes">&#10003;</span></td></tr>
           <tr><td class="lft">Posterior $q$ comes from</td><td>&mdash;</td><td>VAE (additional net)</td><td class="ours">the same net</td></tr>
-          <tr><td class="lft">No extra active parameters</td><td><span class="yes">&#10003;</span></td><td><span class="no">&#10007;</span></td><td class="ours"><span class="yes">&#10003;</span></td></tr>
           <tr><td class="lft">Forward passes per training step</td><td>1</td><td>2</td><td class="ours">2</td></tr>
           <tr><td class="lft">Forward passes per sampling step</td><td>1</td><td>1</td><td class="ours">1</td></tr>
         </tbody>
@@ -201,7 +204,7 @@
 </section>
 
 <!-- ===================== RESULTS ===================== -->
-<section class="section has-background-light">
+<section class="section">
   <div class="container" style="max-width:1120px;">
     <h2 class="title is-3 has-text-centered">Results</h2>
 
@@ -211,105 +214,50 @@
       <p>
         All models share the same small DiT backbone and are trained on LM1B for 1M steps at global batch 512;
         E-MoE uses as many active parameters per token as MDLM. The gain is largest where the factorization barrier
-        binds: at NFE&nbsp;=&nbsp;1 and 2, E-MoE lowers generative perplexity by <strong>2&ndash;2.6&times;</strong> relative to
-        every baseline at the same sample entropy, and at NFE&nbsp;=&nbsp;2 it reaches a MAUVE of <strong>24.6%</strong> against
+        binds: at NFE&nbsp;=&nbsp;1 and 2, E-MoE lowers generative perplexity <strong>by 2&times; or more</strong> relative to
+        every baseline, including the capacity-matched MDLM-MoE, at the same sample entropy, and at NFE&nbsp;=&nbsp;2 it reaches a MAUVE of <strong>24.6%</strong> against
         3.0% for MDLM and 3.8% for VADD.
       </p>
     </div>
-    <figure class="fig" style="max-width:860px;">
-      <img src="static/fig1_lm1b_bars.png" alt="Few-step generative perplexity on LM1B">
-      <figcaption>
-        <strong>Few-step generative perplexity on LM1B</strong> (lower is better, $H$ = sample entropy). E-MoE gives markedly
-        lower generative perplexity than both factorized MDLM and continuous-latent VADD for all NFEs 1&ndash;16, at
-        matched sample entropy.
-      </figcaption>
-    </figure>
-    <figure class="fig" style="max-width:960px;">
-      <img src="static/fig5_lm1b_sweep.png" alt="Generative perplexity and MAUVE over NFE on LM1B">
+    <figure class="fig" style="max-width:1080px;">
+      <div class="fig-pair">
+        <img src="static/genppl_nfe.svg" alt="Generative perplexity over NFE on LM1B">
+        <img src="static/mauve_nfe.svg" alt="MAUVE over NFE on LM1B">
+      </div>
       <figcaption>
         <strong>Two views of the same LM1B sweep.</strong> <em>Left:</em> Generative Perplexity ($\downarrow$).
         <em>Right:</em> MAUVE ($\uparrow$).
       </figcaption>
     </figure>
-    <div style="overflow-x:auto; margin-top:1.4rem;">
-      <table class="restable">
-        <caption><strong>Few-step generation on LM1B.</strong> Generative perplexity (Gen-PPL, GPT-2 Large) and sample entropy $H$
-          (data: 4.32), averaged over 2000 samples. Autoregressive baseline: 67.97 ($H$ = 4.32) at NFE = 128.</caption>
+    <div style="overflow-x:auto; margin-top:1.6rem;">
+      <table class="restable big">
+        <caption><strong>Few-step generation on LM1B.</strong> Generative perplexity (GPT-2 Large, $\downarrow$) and unigram sample
+          entropy $H$, mean $\pm$ std over 5 disjoint groups of 1000 samples. MDLM-MoE uses the same MoE backbone as E-MoE with
+          deterministic routing and no latent. BD3-LM numbers are from 2000 samples; superscripts give its block size.
+          Autoregressive baseline: 68.3 $\pm$ 0.9 ($H$ = 4.32) at NFE = 128.</caption>
         <thead>
-          <tr><th rowspan="2">NFE</th><th colspan="2">MDLM</th><th colspan="2">SEDD</th><th colspan="2">VADD</th><th class="ourshdr" colspan="2">E-MoE (ours)</th></tr>
-          <tr><th>Gen-PPL&darr;</th><th>$H$</th><th>Gen-PPL&darr;</th><th>$H$</th><th>Gen-PPL&darr;</th><th>$H$</th><th class="ourshdr">Gen-PPL&darr;</th><th class="ourshdr">$H$</th></tr>
+          <tr><th>NFE</th><th>MDLM</th><th>SEDD</th><th>VADD</th><th>BD3-LM</th><th>MDLM-MoE</th><th class="ourshdr">E-MoE (ours)</th></tr>
         </thead>
         <tbody>
-          <tr><td>1</td><td>1433.8</td><td>4.37</td><td>1578.8</td><td>4.37</td><td>1270.8</td><td>4.34</td><td class="ours">643.8</td><td class="ours">4.35</td></tr>
-          <tr><td>2</td><td>997.5</td><td>4.37</td><td>1059.3</td><td>4.37</td><td>763.2</td><td>4.33</td><td class="ours">383.7</td><td class="ours">4.35</td></tr>
-          <tr><td>4</td><td>477.8</td><td>4.36</td><td>456.0</td><td>4.34</td><td>370.5</td><td>4.33</td><td class="ours">235.4</td><td class="ours">4.34</td></tr>
-          <tr><td>8</td><td>260.5</td><td>4.35</td><td>243.4</td><td>4.33</td><td>220.7</td><td>4.33</td><td class="ours">174.9</td><td class="ours">4.34</td></tr>
-          <tr><td>16</td><td>179.4</td><td>4.35</td><td>166.7</td><td>4.33</td><td>168.4</td><td>4.33</td><td class="ours">146.4</td><td class="ours">4.34</td></tr>
-          <tr><td>32</td><td>148.6</td><td>4.35</td><td>136.1</td><td>4.33</td><td>139.6</td><td>4.32</td><td class="ours">135.1</td><td class="ours">4.34</td></tr>
-          <tr><td>64</td><td>134.1</td><td>4.35</td><td>125.6</td><td>4.32</td><td>127.4</td><td>4.32</td><td class="ours">128.1</td><td class="ours">4.33</td></tr>
-          <tr><td>128</td><td>126.3</td><td>4.35</td><td>118.5</td><td>4.32</td><td>118.4</td><td>4.32</td><td class="ours">126.3</td><td class="ours">4.34</td></tr>
+          <tr><td>1</td><td>1440 &plusmn; 13 / 4.37</td><td>1604 &plusmn; 14 / 4.38</td><td>1279 &plusmn; 20 / 4.35</td><td>&mdash;</td><td>1293 &plusmn; 13 / 4.33</td><td class="ours">644 &plusmn; 6 / 4.35</td></tr>
+          <tr><td>2</td><td>993 &plusmn; 19 / 4.37</td><td>1065 &plusmn; 16 / 4.38</td><td>769 &plusmn; 11 / 4.33</td><td>&mdash;</td><td>816 &plusmn; 14 / 4.33</td><td class="ours">379 &plusmn; 5 / 4.35</td></tr>
+          <tr><td>4</td><td>469 &plusmn; 4 / 4.36</td><td>461 &plusmn; 2 / 4.35</td><td>372 &plusmn; 2 / 4.33</td><td>&mdash;</td><td>383 &plusmn; 2 / 4.32</td><td class="ours">235 &plusmn; 3 / 4.34</td></tr>
+          <tr><td>8</td><td>260.0 &plusmn; 0.8 / 4.35</td><td>242.5 &plusmn; 5.4 / 4.33</td><td>223.6 &plusmn; 5.5 / 4.33</td><td>1130.6<sup>16</sup> / 4.34</td><td>214.7 &plusmn; 1.2 / 4.32</td><td class="ours">174.8 &plusmn; 2.1 / 4.34</td></tr>
+          <tr><td>16</td><td>179.4 &plusmn; 3.1 / 4.35</td><td>167.4 &plusmn; 3.5 / 4.33</td><td>165.7 &plusmn; 1.5 / 4.33</td><td>1004.1<sup>8</sup> / 4.32</td><td>149.0 &plusmn; 3.1 / 4.32</td><td class="ours">148.4 &plusmn; 2.0 / 4.34</td></tr>
+          <tr><td>32</td><td>149.9 &plusmn; 1.9 / 4.35</td><td>138.0 &plusmn; 1.2 / 4.33</td><td>141.1 &plusmn; 2.5 / 4.32</td><td>790.7<sup>4</sup> / 4.29</td><td>125.1 &plusmn; 1.3 / 4.33</td><td class="ours">135.3 &plusmn; 1.8 / 4.34</td></tr>
+          <tr><td>64</td><td>133.7 &plusmn; 2.0 / 4.35</td><td>124.2 &plusmn; 1.5 / 4.33</td><td>126.6 &plusmn; 0.6 / 4.32</td><td>&mdash;</td><td>112.4 &plusmn; 1.1 / 4.33</td><td class="ours">130.1 &plusmn; 0.8 / 4.34</td></tr>
+          <tr><td>128</td><td>127.6 &plusmn; 1.3 / 4.35</td><td>118.9 &plusmn; 1.2 / 4.33</td><td>117.8 &plusmn; 0.6 / 4.32</td><td>&mdash;</td><td>107.0 &plusmn; 1.4 / 4.32</td><td class="ours">124.9 &plusmn; 1.6 / 4.34</td></tr>
         </tbody>
       </table>
     </div>
 
     <!-- Toy -->
     <h3 class="title is-4 has-text-centered" style="margin-top:2.6rem;">2-D toy distributions</h3>
-    <div class="content is-size-5 has-text-justified" style="max-width:960px; margin:0 auto;">
-      <p>
-        At NFE&nbsp;=&nbsp;1, MDLM's independently-sampled coordinates scatter across a blurred grid on 8-modes and fill the
-        entire disk on Swiss-roll, while E-MoE stays concentrated on the eight true clusters and traces the spiral
-        manifold. The full study is reproducible end to end in our
-        <a href="https://github.com/Arseny5/e-moe/blob/main/notebooks/toy_2d_experiments.ipynb">toy notebook</a>.
-      </p>
-    </div>
     <figure class="fig" style="max-width:960px;">
-      <img src="static/fig4_toy.png" alt="Generation results on 2-D toy examples">
+      <img src="static/toy_summary_grid.png" alt="Generation results on 2-D toy examples">
       <figcaption>
         <strong>Generation results on 2-D toy examples.</strong> Ground truth and generations of MDLM, VADD and E-MoE at
         NFE&nbsp;=&nbsp;1 on 8-modes and Swiss-roll.
-      </figcaption>
-    </figure>
-    <div style="overflow-x:auto; margin-top:1.4rem;">
-      <table class="restable">
-        <caption><strong>Validity ($\uparrow$) of generated samples across sampling steps (NFE).</strong> Values are averaged over 3 seeds.</caption>
-        <thead>
-          <tr><th rowspan="2">Model</th><th colspan="6">8-modes</th><th colspan="6">Swiss-roll</th></tr>
-          <tr><th>1</th><th>2</th><th>4</th><th>8</th><th>16</th><th>32</th><th>1</th><th>2</th><th>4</th><th>8</th><th>16</th><th>32</th></tr>
-        </thead>
-        <tbody>
-          <tr><td class="lft">MDLM</td><td>37.7</td><td>68.1</td><td>84.2</td><td>90.9</td><td>94.9</td><td>97.0</td><td>49.3</td><td>73.1</td><td>86.5</td><td>91.9</td><td>95.2</td><td>96.9</td></tr>
-          <tr><td class="lft">VADD</td><td>91.8</td><td>95.3</td><td>97.3</td><td>97.7</td><td>98.5</td><td>98.5</td><td>93.8</td><td>95.9</td><td>97.1</td><td>97.6</td><td>98.2</td><td>98.4</td></tr>
-          <tr class="ours"><td class="lft">E-MoE (ours)</td><td>94.4</td><td>96.6</td><td>97.7</td><td>98.3</td><td>98.6</td><td>98.7</td><td>90.3</td><td>92.6</td><td>95.7</td><td>96.4</td><td>98.6</td><td>97.9</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- MNIST -->
-    <h3 class="title is-4 has-text-centered" style="margin-top:2.6rem;">Binarized MNIST</h3>
-    <div class="content is-size-5 has-text-justified" style="max-width:960px; margin:0 auto;">
-      <p>
-        At low NFE, factorized MDLM produces fragmented strokes and globally inconsistent digit shapes, whereas both VADD
-        and E-MoE already generate coherent samples. E-MoE achieves the best test bits-per-dimension among the three
-        methods while essentially matching VADD in parameter count.
-      </p>
-    </div>
-    <div style="overflow-x:auto;">
-      <table class="restable">
-        <caption><strong>Test bits-per-dimension ($\downarrow$) and parameter count on binarized MNIST.</strong></caption>
-        <thead><tr><th>Model</th><th>BPD&darr;</th><th>Params</th></tr></thead>
-        <tbody>
-          <tr><td class="lft">MDLM</td><td>0.077</td><td>2.07M</td></tr>
-          <tr><td class="lft">VADD</td><td>0.064</td><td>2.50M</td></tr>
-          <tr class="ours"><td class="lft">E-MoE (ours)</td><td>0.062</td><td>2.49M</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <figure class="fig" style="max-width:880px;">
-      <img src="static/fig8_mnist.png" alt="Binarized-MNIST samples across NFE">
-      <figcaption>
-        <strong>Binarized-MNIST samples across NFE</strong>, the first 16 draws from a fixed seed per cell. MDLM gives
-        unstructured speckle at NFE&nbsp;&le;&nbsp;2 and resolves digits only by NFE&nbsp;=&nbsp;10&ndash;20, while E-MoE produces
-        recognizable digits from a single step.
       </figcaption>
     </figure>
   </div>
