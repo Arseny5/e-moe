@@ -1,0 +1,24 @@
+name: vadd
+backbone: dit
+parameterization: subs
+time_conditioning: False
+T: 0
+subs_masking: False
+causal_attention: False
+ignore_bos: False
+loss_type: vae
+
+# VADD-specific latent / VAE hyperparams
+latent_dim: 512
+latent1d: True
+latent_struc: adaln
+latentMLP: True
+mask_struc: adaln
+num_particles: 1
+encoder_training_times: 1
+init_kl_weight: 0.0
+kl_weight_interval: 100000
+loss_strategy: klweight  # 'klweight' or 'none'
+multixt: False
+sampling_nz: 1
+sampling_fixz: False

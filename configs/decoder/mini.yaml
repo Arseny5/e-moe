@@ -1,0 +1,10 @@
+name: mini
+hidden_size: 512
+cond_dim: 128
+mask_struc: adaln
+length: 128
+n_blocks: 8
+n_heads: 8
+scale_by_sigma: True
+dropout: 0.1
+tie_word_embeddings: False

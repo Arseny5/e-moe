@@ -1,0 +1,9 @@
+train: lm1b
+valid: lm1b
+modality: text
+tokenizer_name_or_path: bert-base-uncased
+cache_dir: ./data_cache
+wrap: True  # sentence packing
+streaming: False
+insert_train_eos: True
+insert_valid_eos: True

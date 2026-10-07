@@ -1,0 +1,23 @@
+name: emoe
+backbone: dit
+
+parameterization: subs
+time_conditioning: False
+T: 0
+subs_masking: False
+causal_attention: False
+ignore_bos: False
+loss_type: elbo
+
+num_experts: 8
+max_expert_per_tok: 2   # top-k of the Gumbel-softmax (one expert per token is active)
+det_moe: False          # True: MDLM-MoE baseline (deterministic routing, no latent)
+sparse_moe_infer: True
+
+kl_weight: 1.0          # KL(q(z | x0) || p(z | x_t)) between the clean and noisy routers
+lb_weight: 0.0          # load-balancing loss (0.01 for MDLM-MoE)
+
+# Gumbel temperature of the straight-through router
+gumbel_tau_init: 1.0
+gumbel_tau_min: 0.1
+gumbel_tau_anneal_rate: 3.0e-5
