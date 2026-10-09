@@ -6,13 +6,14 @@
 
 set -e
 cd "$(dirname "$0")/.."
-DATA_CACHE=${DATA_CACHE:-./data_cache}
+DATA_CACHE=$(realpath -m "${DATA_CACHE:-./data_cache}")  # absolute: Hydra runs inside the output dir
+CKPT=$(realpath "$CKPT")
 PRED=ancestral_cache; EXTRA=""; MAIN_ALGO=$ALGO
 [ "$ALGO" = "sedd" ] && PRED=analytic
 [ "$ALGO" = "vadd" ] && EXTRA="+decoder=small decoder.length=128"
 [ "$ALGO" = "mdlm_moe" ] && MAIN_ALGO=emoe && EXTRA="algo.det_moe=True"
 for NFE in 1 2 4 8 16 32 64 128; do
-  D=outputs/eval_${ALGO}/nfe$NFE; mkdir -p $D
+  D=$PWD/outputs/eval_${ALGO}/nfe$NFE; mkdir -p $D
   python -u -m main mode=sample_eval algo=$MAIN_ALGO model=small model.length=128 $EXTRA \
     data=lm1b data.wrap=True data.cache_dir=$DATA_CACHE \
     loader.eval_batch_size=8 loader.eval_global_batch_size=8 trainer.devices=1 \

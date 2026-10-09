@@ -1,3 +1,4 @@
+setuptools<81  # lightning 2.2 imports pkg_resources
 # conda install nvidia/label/cuda-12.4.0::cuda-toolkit
 datasets==2.15.0
 einops==0.7.0

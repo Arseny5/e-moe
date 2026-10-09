@@ -4,7 +4,7 @@
 
 set -e
 cd "$(dirname "$0")/.."
-DATA_CACHE=${DATA_CACHE:-./data_cache}
+DATA_CACHE=$(realpath -m "${DATA_CACHE:-./data_cache}")  # absolute: Hydra runs inside the output dir
 OUT=${OUT:-outputs/lm1b_sedd}
 python -u -m main \
   algo=sedd model=small model.length=128 \

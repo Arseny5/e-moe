@@ -44,7 +44,7 @@ e-moe/
 │   └── dit_vadd.py          # VADD backbone
 ├── configs/                 # Hydra configs (algo, model, data, noise, lr_scheduler, ...)
 ├── scripts/                 # LM1B training and evaluation scripts
-├── tools/mauve.py           # MAUVE
+├── tools/eval_mauve.py      # MAUVE
 └── notebooks/
     └── toy_2d_experiments.ipynb   # 2-D toy experiments
 ```
@@ -131,11 +131,11 @@ The metrics for each NFE are printed and logged to `outputs/eval_<ALGO>/nfe<N>/l
 to `outputs/eval_<ALGO>/nfe<N>/samples.json`.
 
 **MAUVE.** The evaluation script also copies the samples to `outputs/mauve_samples/<ALGO>_nfe<N>.json`.
-`tools/mauve.py` scores every file there against 2000 LM1B test sequences (GPT-2 Large features, mean ± std over
+`tools/eval_mauve.py` scores every file there against 2000 LM1B test sequences (GPT-2 Large features, mean ± std over
 3 k-means seeds) and writes the table to `results_mauve.txt`:
 
 ```bash
-python tools/mauve.py
+python tools/eval_mauve.py
 ```
 
 **Inference options.**
